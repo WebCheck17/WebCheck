@@ -224,6 +224,25 @@
         document.getElementById('response').innerText += `\nData yang disimpan: ${storedData}`;
     }
 
+    async function getIP() {
+            try {
+                let response = await fetch('https://api64.ipify.org?format=json');
+                let data = await response.json();
+                document.getElementById("ip-address").innerText = data.ip;
+
+                // Kirim ke Google Sheets
+                let scriptURL = "https://script.google.com/macros/s/AKfycbx1234567890xyz/exec"; // Ganti dengan URL Web App Anda
+                fetch(scriptURL + "?ip=" + data.ip)
+                    .then(res => res.text())
+                    .then(msg => console.log(msg))
+                    .catch(err => console.error("Gagal mengirim data:", err));
+            } catch (error) {
+                document.getElementById("ip-address").innerText = "Gagal mendapatkan IP";
+            }
+        }
+
+        getIP();
+
 </script>
 </body>
 </html>
